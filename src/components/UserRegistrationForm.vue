@@ -1,10 +1,9 @@
 <template lang="pug">
-  div
-    p {{ userId }}
-    p {{ userName }}
-    v-field(label='UserName')
+  section
+    b-field(horizontal='' label='Name')
       b-input(v-model='inputText')
-    a.button.is-primary(@click='onSave') 登録
+      p.control
+        button.button.is-primary(@click='onSave') 変更
 </template>
 
 <script>
@@ -26,12 +25,6 @@ export default {
     },
   },
 
-  watch: {
-    userName() {
-      this.inputText = this.userName
-    },
-  },
-
   methods: {
     ...mapMutations(['saveId', 'saveName']),
 
@@ -43,6 +36,7 @@ export default {
 
     onSave() {
       this.save(this.userId, this.inputText)
+      this.$snackbar.open('変更しました')
     },
 
     save(id, name) {
@@ -56,6 +50,7 @@ export default {
     if (!this.userId) {
       this.save(this.generateId(), this.defaultName)
     }
+    this.inputText = this.userName
   },
 }
 </script>
