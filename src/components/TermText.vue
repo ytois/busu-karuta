@@ -1,6 +1,7 @@
 <template lang="pug">
-div
-  p {{ currentSentence }}
+nav.navbar.is-fixed-top
+  .has-text-centered.with-full
+    p {{ currentSentence }}
   button.button(@click='testRead') 読む
 </template>
 
@@ -23,3 +24,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.with-full {
+  width: 100%;
+}
+</style>

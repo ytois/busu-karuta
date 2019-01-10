@@ -1,16 +1,18 @@
 <template lang="pug">
   div
-    CardList
+    TermText
+    CardList.margin-top
     button.button.is-success(@click='requestQuestion') request
 </template>
 
 <script>
 import CardList from '../components/CardList'
+import TermText from '../components/TermText'
 import { createNamespacedHelpers } from 'vuex'
 const { mapState, mapActions } = createNamespacedHelpers('room')
 
 export default {
-  components: { CardList },
+  components: { CardList, TermText },
 
   computed: {
     ...mapState(['websocket']),
@@ -31,3 +33,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.margin-top {
+  margin-top: 50px;
+}
+</style>
