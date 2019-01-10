@@ -1,19 +1,21 @@
 <template lang="pug">
 div
-  ul
-    li(v-for='card in cardList')
-      div(@click='onClick')
-        | {{ card.name }}
-  TermText
+  div
+    ul
+      li(v-for='card in cardList')
+        Card(:text='card.name')
+  div
+    TermText
 </template>
 
 <script>
 import TermText from './TermText'
+import Card from './Card'
 
 export default {
   // props: ['cardList'],
 
-  components: { TermText },
+  components: { TermText, Card },
 
   computed: {
     cardList() {
@@ -25,12 +27,6 @@ export default {
         { number: 4, name: 'え', src: '' },
         { number: 4, name: 'お', src: '' },
       ]
-    },
-  },
-
-  methods: {
-    onClick() {
-      return null
     },
   },
 }

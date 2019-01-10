@@ -18,6 +18,21 @@
 
 ## Component
 
+### Room
+
+- status
+  - score
+  - room status
+  - remining number
+- card list
+  - card
+    - button
+- question
+  - sentence
+- anser
+  - correct / fail
+  - anser time
+
 ## socket method
 
 - anser
