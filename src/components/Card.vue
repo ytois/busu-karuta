@@ -1,12 +1,21 @@
 <template lang="pug">
   .karuta-card(@click='onClick' :style='rotate')
-    p {{ text }}
+    img(v-if='src' :src='src')
+    p(v-else) {{ name }}
 </template>
 
 <script>
 export default {
   props: {
+    name: {
+      type: String,
+      default: '',
+    },
     text: {
+      type: String,
+      default: '',
+    },
+    src: {
       type: String,
       default: '',
     },
@@ -14,14 +23,14 @@ export default {
 
   computed: {
     rotate() {
-      let angle = Math.floor(Math.random() * Math.floor(20))
-      return `transform: rotate(${angle - 10}deg);`
+      let angle = Math.floor(Math.random() * Math.floor(30))
+      return `transform: rotate(${angle - 15}deg);`
     },
   },
 
   methods: {
     onClick() {
-      console.log(`click: ${this.text}`)
+      this.$snackbar.open(this.text)
     },
   },
 }
@@ -29,9 +38,7 @@ export default {
 
 <style scoped>
 .karuta-card {
-  padding: 5px;
-  width: 50px;
-  height: 80px;
+  width: 70px;
   background-color: white;
   border: solid 1px #bbb;
   box-shadow: 1px 1px 3px #bbb;

@@ -3,7 +3,7 @@ div
   div
     ul
       li(v-for='card in cardList')
-        Card(:text='card.name')
+        Card(:name='card.name', :src='card.src' :text='card.text')
   div
     TermText
 </template>
@@ -11,6 +11,7 @@ div
 <script>
 import TermText from './TermText'
 import Card from './Card'
+import images from '../lib/images'
 
 export default {
   // props: ['cardList'],
@@ -20,13 +21,7 @@ export default {
   computed: {
     cardList() {
       // TODO: 一旦ベタ。サーバーからpropsで渡すように変更する
-      return [
-        { number: 1, name: 'あ', src: '' },
-        { number: 2, name: 'い', src: '' },
-        { number: 3, name: 'う', src: '' },
-        { number: 4, name: 'え', src: '' },
-        { number: 4, name: 'お', src: '' },
-      ]
+      return images
     },
   },
 }
