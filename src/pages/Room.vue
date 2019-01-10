@@ -1,46 +1,33 @@
 <template lang="pug">
   div
     CardList
-    button.button.is-success(@click='sendAnser') send
+    button.button.is-success(@click='requestQuestion') request
 </template>
 
 <script>
 import CardList from '../components/CardList'
+import { createNamespacedHelpers } from 'vuex'
+const { mapState, mapActions } = createNamespacedHelpers('room')
 
 export default {
   components: { CardList },
 
-  data() {
-    return {
-      ws: null,
-    }
-  },
-
   computed: {
-    endpoint() {
-      let base = `${location.origin.replace(/^http/, 'ws')}`
-      return `${base}${this.$route.path}`
-    },
-  },
-
-  methods: {
-    sendAnser() {
-      let msg = { method: 'anser', data: 'test message' }
-      this.ws.send(JSON.stringify(msg))
-    },
+    ...mapState(['websocket']),
   },
 
   mounted() {
-    const self = this
-    this.ws = new WebSocket(this.endpoint)
+    this.connectSocket(this.$route.path)
+  },
 
-    this.ws.onopen = event => {
-      self.ws.send('hoge hoge')
-    }
+  methods: {
+    ...mapActions(['connectSocket']),
 
-    this.ws.onmessage = event => {
-      console.log(`receive message: ${event.data}`)
-    }
+    requestQuestion() {
+      // test method
+      let msg = { method: 'requestQuestion' }
+      this.websocket.send(JSON.stringify(msg))
+    },
   },
 }
 </script>

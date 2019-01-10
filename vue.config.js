@@ -5,4 +5,7 @@ module.exports = {
       template: './src/index.pug',
     },
   },
+  configureWebpack: {
+    devtool: 'source-map',
+  },
 }

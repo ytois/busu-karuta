@@ -9,12 +9,12 @@ class WebsocketHandler {
 
     switch (json.method) {
       case 'anser':
+      case 'requestQuestion':
         this[json.method](json.data)
         break
 
       default:
-        console.log('undefined message: ')
-        console.log(json)
+        console.log(`undefined message: ${json}`)
         break
     }
   }
@@ -30,8 +30,23 @@ class WebsocketHandler {
   anser(message) {
     console.log(message)
     let response = { method: 'test', data: { text: 'test message' } }
+    this.sendConnections(response)
+  }
+
+  requestQuestion(message) {
+    // test method
+    const sentences = ['猫に小判', 'かっぱの川流れ', '泣きっ面に蜂']
+    const text = sentences.sort(() => Math.random() - 0.5)[0]
+    let response = { method: 'question', data: { text: text } }
+    this.sendConnections(response)
+  }
+
+  sendConnections(message) {
     this.connections.forEach(connect => {
-      connect.socket.send(JSON.stringify(response))
+      // TODO: いずれかがcloseになってるとエラーになるためいったん回避
+      if (connect.socket.readyState === 1) {
+        connect.socket.send(JSON.stringify(message))
+      }
     })
   }
 

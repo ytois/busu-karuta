@@ -5,19 +5,20 @@ div
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
-const { mapState, mapActions } = createNamespacedHelpers('game')
+import { mapState, mapActions } from 'vuex'
 
 export default {
   computed: {
-    ...mapState(['currentSentence']),
+    ...mapState('room/game', {
+      currentSentence: state => state.currentSentence,
+    }),
   },
 
   methods: {
-    ...mapActions(['readSentence']),
+    ...mapActions('room/WebsocketMessage', ['question']),
 
     testRead() {
-      this.readSentence('犬もあるけば棒にあたる')
+      this.question({ text: '犬もあるけば棒にあたる' })
     },
   },
 }

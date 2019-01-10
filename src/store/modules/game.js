@@ -23,9 +23,5 @@ export default {
         state.currentSentence += textArray.shift()
       }
     },
-
-    next() {},
-
-    finish() {},
   },
 }
