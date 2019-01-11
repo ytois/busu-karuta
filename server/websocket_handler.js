@@ -1,4 +1,4 @@
-const CardList = require('./models/card_list')
+const Card = require('./models/card')
 
 class WebsocketHandler {
   constructor(websocket, connections) {
@@ -38,8 +38,8 @@ class WebsocketHandler {
 
   requestCardList(message) {
     const self = this
-    CardList.generate().then(cardList => {
-      const response = { method: 'cardList', data: { cardList: cardList.list } }
+    Card.generateCollection().then(cardList => {
+      const response = { method: 'cardList', data: { cardList: cardList } }
       self.sendConnections(response)
     })
   }
