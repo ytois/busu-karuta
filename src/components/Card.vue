@@ -38,7 +38,7 @@ export default {
 
   methods: {
     onClick() {
-      // this.$snackbar.open(this.text)
+      // this.$buefy.snackbar.open(this.text)
       this.$emit('click', this.cardNumber)
     },
   },

@@ -7,7 +7,7 @@
         button.delete(@click='close' aria-label='close')
       section.modal-card-body
         p 時間: {{ game && game.seconds }}秒
-        p 不正回数: {{ game && game.incorrect }}
+        p 不正解数: {{ game && game.incorrect }}
       footer.modal-card-foot
         button.button(@click='close') 終了
 </template>

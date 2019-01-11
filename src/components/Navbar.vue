@@ -3,7 +3,7 @@
     template(slot='brand')
       b-navbar-item
         router-link.navbar-item(:to='{ name: "root" }')
-          | ブサイク回文カルタ
+          | ぶさいく回文カルタ
     template(slot='start')
       b-navbar-item
         router-link(:to='{ name: "root" }') Home

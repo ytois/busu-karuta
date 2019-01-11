@@ -64,13 +64,13 @@ export default {
       this.answerCard(Number(cardId))
         .then(result => {
           if (result) {
-            this.$snackbar.open({
+            this.$buefy.snackbar.open({
               message: '正解',
               type: 'is-success',
             })
           } else {
             this.incorrectCount += 1
-            this.$snackbar.open({
+            this.$buefy.snackbar.open({
               message: '不正解',
               type: 'is-danger',
             })
