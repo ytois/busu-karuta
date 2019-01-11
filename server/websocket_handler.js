@@ -1,3 +1,5 @@
+const CardList = require('./models/card_list')
+
 class WebsocketHandler {
   constructor(websocket, connections) {
     this.websocket = websocket
@@ -10,6 +12,7 @@ class WebsocketHandler {
     switch (json.method) {
       case 'anser':
       case 'requestQuestion':
+      case 'requestCardList':
         this[json.method](json.data)
         break
 
@@ -31,6 +34,14 @@ class WebsocketHandler {
     console.log(message)
     let response = { method: 'test', data: { text: 'test message' } }
     this.sendConnections(response)
+  }
+
+  requestCardList(message) {
+    const self = this
+    CardList.generate().then(cardList => {
+      const response = { method: 'cardList', data: { cardList: cardList.list } }
+      self.sendConnections(response)
+    })
   }
 
   requestQuestion(message) {

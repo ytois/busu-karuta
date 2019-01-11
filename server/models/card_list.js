@@ -49,6 +49,10 @@ class CardList extends Base {
       return `${CardList.keyName}${card.id}`
     })
   }
+
+  get length() {
+    return this.list.length
+  }
 }
 
 module.exports = CardList

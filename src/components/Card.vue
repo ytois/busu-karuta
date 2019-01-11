@@ -7,6 +7,10 @@
 <script>
 export default {
   props: {
+    cardNumber: {
+      type: Number,
+      required: true,
+    },
     name: {
       type: String,
       default: '',

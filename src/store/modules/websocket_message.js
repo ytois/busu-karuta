@@ -15,6 +15,7 @@ export default {
 
       switch (json.method) {
         case 'question':
+        case 'cardList':
           dispatch(json.method, json.data)
           break
 
@@ -26,6 +27,12 @@ export default {
 
     question({ dispatch }, eventData) {
       dispatch('room/game/readSentence', eventData.text, {
+        root: true,
+      })
+    },
+
+    cardList({ dispatch }, eventData) {
+      dispatch('room/setCardList', eventData.cardList, {
         root: true,
       })
     },

@@ -12,6 +12,7 @@ export default {
 
   state: {
     websocket: null,
+    cardList: [],
   },
 
   actions: {
@@ -30,6 +31,14 @@ export default {
           root: true,
         })
       }
+    },
+
+    requestCardList({ state }) {
+      state.websocket.send(JSON.stringify({ method: 'requestCardList' }))
+    },
+
+    setCardList({ state }, cardList) {
+      state.cardList = cardList
     },
   },
 }
