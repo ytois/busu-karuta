@@ -16,13 +16,17 @@ export default {
   },
 
   actions: {
-    connectSocket({ state, dispatch }, roomPath) {
+    connectSocket({ state, dispatch }, payload) {
       const base = `${location.origin.replace(/^http/, 'ws')}`
-      const endpoint = path.join(base, roomPath)
+      const endpoint = path.join(base, payload.roomPath)
       state.websocket = new WebSocket(endpoint)
 
       state.websocket.onopen = event => {
         state.websocket.send('connection open')
+        console.log('connection success.')
+
+        // 接続完了時にカードリストをリクエストする
+        dispatch('requestCardList', { roomId: payload.roomId })
       }
 
       state.websocket.onmessage = event => {
@@ -33,8 +37,10 @@ export default {
       }
     },
 
-    requestCardList({ state }) {
-      state.websocket.send(JSON.stringify({ method: 'requestCardList' }))
+    requestCardList({ state }, roomId) {
+      state.websocket.send(
+        JSON.stringify({ method: 'requestCardList', data: roomId })
+      )
     },
 
     setCardList({ state }, cardList) {

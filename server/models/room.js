@@ -30,6 +30,7 @@ class Room extends Base {
   static emptyRoom() {
     return new this({
       id: null,
+      tittle: '',
       status: '',
       connections: 0,
       cardListIds: [],

@@ -1,4 +1,5 @@
 const Card = require('./models/card')
+const Room = require('./models/room')
 
 class WebsocketHandler {
   constructor(websocket, connections) {
@@ -22,29 +23,29 @@ class WebsocketHandler {
     }
   }
 
-  parseMessage(message) {
+  parseMessage(data) {
     try {
-      return JSON.parse(message)
+      return JSON.parse(data)
     } catch (e) {
-      return { text: message }
+      return { text: data }
     }
   }
 
-  anser(message) {
-    console.log(message)
+  anser(data) {
+    console.log(data)
     let response = { method: 'test', data: { text: 'test message' } }
     this.sendConnections(response)
   }
 
-  requestCardList(message) {
+  async requestCardList(data) {
     const self = this
-    Card.generateCollection().then(cardList => {
-      const response = { method: 'cardList', data: { cardList: cardList } }
-      self.sendConnections(response)
-    })
+    const room = await Room.get(data.roomId)
+    const cardList = await Card.getAll(room.cardListIds)
+    const response = { method: 'cardList', data: { cardList: cardList } }
+    self.sendConnections(response)
   }
 
-  requestQuestion(message) {
+  requestQuestion(data) {
     // test method
     const sentences = ['猫に小判', 'かっぱの川流れ', '泣きっ面に蜂']
     const text = sentences.sort(() => Math.random() - 0.5)[0]
@@ -52,11 +53,11 @@ class WebsocketHandler {
     this.sendConnections(response)
   }
 
-  sendConnections(message) {
+  sendConnections(data) {
     this.connections.forEach(connect => {
       // TODO: いずれかがcloseになってるとエラーになるためいったん回避
       if (connect.socket.readyState === 1) {
-        connect.socket.send(JSON.stringify(message))
+        connect.socket.send(JSON.stringify(data))
       }
     })
   }

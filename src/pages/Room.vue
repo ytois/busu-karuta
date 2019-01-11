@@ -19,7 +19,10 @@ export default {
   },
 
   mounted() {
-    this.connectSocket(this.$route.path)
+    this.connectSocket({
+      roomPath: this.$route.path,
+      roomId: this.$route.params.id,
+    })
   },
 
   methods: {
