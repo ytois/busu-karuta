@@ -1,28 +1,32 @@
 const Base = require('./base')
 
 class CardList extends Base {
-  static get keyPrefix() {
-    return 'card:*'
+  static get keyName() {
+    return 'card:'
   }
 
-  constructor() {
+  static async generate() {
+    const allKeys = await this.redis.keys(`${CardList.keyName}*`)
+    const records = await this.redis.mget(allKeys)
+    const list = records.map(value => {
+      return JSON.parse(value)
+    })
+
+    const cardList = new this()
+    cardList.list = list
+    cardList.shuffle()
+    return cardList
+  }
+
+  constructor(ids) {
     super()
+    const self = this
     this.list = []
-    const self = this
-    this.loadList().then(() => {
-      self.shuffle()
-    })
-  }
-
-  loadList() {
-    const self = this
-    return this.redis.keys('card:*').then(keys => {
-      self.redis.mget(keys).then(results => {
-        self.list = results.map(value => {
-          return JSON.parse(value)
-        })
+    if (ids) {
+      CardList.getAll(ids).then(list => {
+        self.list = list
       })
-    })
+    }
   }
 
   shuffle() {
@@ -34,6 +38,16 @@ class CardList extends Base {
   pick() {
     const index = Math.floor(Math.random() * this.list.length)
     return this.list.splice(index, 1)
+  }
+
+  get ids() {
+    return this.list.map(card => card.id)
+  }
+
+  get keys() {
+    return this.list.map(card => {
+      return `${CardList.keyName}${card.id}`
+    })
   }
 }
 
