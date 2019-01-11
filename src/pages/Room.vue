@@ -2,7 +2,6 @@
   div
     TermText
     CardList.margin-top
-    button.button.is-success(@click='requestQuestion') request
 </template>
 
 <script>
@@ -27,12 +26,6 @@ export default {
 
   methods: {
     ...mapActions(['connectSocket']),
-
-    requestQuestion() {
-      // test method
-      let msg = { method: 'requestQuestion' }
-      this.websocket.send(JSON.stringify(msg))
-    },
   },
 }
 </script>

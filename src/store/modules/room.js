@@ -43,6 +43,12 @@ export default {
       )
     },
 
+    requestQuestion({ state }, roomId) {
+      state.websocket.send(
+        JSON.stringify({ method: 'requestQuestion', data: roomId })
+      )
+    },
+
     setCardList({ state }, cardList) {
       state.cardList = cardList
     },

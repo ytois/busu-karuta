@@ -38,18 +38,16 @@ class WebsocketHandler {
   }
 
   async requestCardList(data) {
-    const self = this
     const room = await Room.get(data.roomId)
     const cardList = await Card.getAll(room.cardListIds)
     const response = { method: 'cardList', data: { cardList: cardList } }
-    self.sendConnections(response)
+    this.sendConnections(response)
   }
 
-  requestQuestion(data) {
-    // test method
-    const sentences = ['猫に小判', 'かっぱの川流れ', '泣きっ面に蜂']
-    const text = sentences.sort(() => Math.random() - 0.5)[0]
-    let response = { method: 'question', data: { text: text } }
+  async requestQuestion(data) {
+    const room = await Room.get(data.roomId)
+    const question = await room.pickQuestion()
+    let response = { method: 'question', data: question }
     this.sendConnections(response)
   }
 

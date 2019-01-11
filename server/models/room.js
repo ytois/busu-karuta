@@ -56,6 +56,7 @@ class Room extends Base {
   }
 
   pickQuestion() {
+    // TODO: pickしても元のリストは変更しない
     const index = Math.floor(Math.random() * this.cardListIds.length)
     const cardId = this.cardListIds.splice(index, 1)
     return Card.get(cardId)

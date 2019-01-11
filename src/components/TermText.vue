@@ -1,8 +1,12 @@
 <template lang="pug">
 nav.navbar.is-fixed-top
-  .has-text-centered.with-full
-    p {{ currentSentence }}
-  button.button(@click='testRead') 読む
+  .navbar-start
+    .has-text-centered.with-full
+      p {{ currentSentence }}
+  .navbar-end
+    .navbar-item
+      .buttons
+        button.button(@click='request') 読む
 </template>
 
 <script>
@@ -17,9 +21,10 @@ export default {
 
   methods: {
     ...mapActions('room/WebsocketMessage', ['question']),
+    ...mapActions('room', ['requestQuestion']),
 
-    testRead() {
-      this.question({ text: '犬もあるけば棒にあたる' })
+    request() {
+      this.requestQuestion({ roomId: this.$route.params.id })
     },
   },
 }
