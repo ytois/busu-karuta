@@ -1,8 +1,10 @@
 const Redis = require('ioredis')
 
 class Base {
-  constructor() {
+  constructor(obj) {
     this.redis = new Redis()
+    this.columns = Object.keys(obj)
+    Object.assign(this, obj)
   }
 
   static get redis() {
@@ -21,11 +23,28 @@ class Base {
   }
 
   static async getAll(ids) {
-    let keys = ids.map(id => {
-      return `${this.keyName}${id}`
-    })
+    var keys = []
+    if (ids) {
+      keys = ids.map(id => {
+        return `${this.keyName}${id}`
+      })
+    } else {
+      keys = await this.redis.keys(`${this.keyName}*`)
+    }
     let records = await this.redis.mget(keys)
     return records.map(value => JSON.parse(value))
+  }
+
+  get json() {
+    let json = {}
+    this.columns.forEach(key => {
+      json[key] = this[key]
+    })
+    return json
+  }
+
+  get string() {
+    return JSON.stringify(this.json)
   }
 }
 

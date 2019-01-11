@@ -1,4 +1,5 @@
 const Base = require('./base')
+const Card = require('./card')
 
 class Room extends Base {
   static get MAX_CONNECT() {
@@ -9,22 +10,40 @@ class Room extends Base {
     return 'room:'
   }
 
-  constructor(object) {
-    super()
-    this.id = object.id
-    this.status = object.status
-    this.connections = object.connections
-    this.cardList = []
-    this.score = {}
-    this.currentQuestion = {}
+  static async lastRoomId() {
+    // IDをredisに保存しておきインクリメントして使う
+    const roomId = await this.redis.get('lastRoomId')
+    return Number(roomId) || 0
   }
 
-  get remainingCard() {
-    return this.cardList.length
+  static async generate() {
+    const room = Room.emptyRoom()
+    const roomId = (await this.lastRoomId()) + 1
+    const cardList = await Card.generateCollection()
+    room.id = roomId
+    room.cardListIds = cardList.map(card => card.id)
+    await room.update()
+    await this.redis.set('lastRoomId', roomId)
+    return room
+  }
+
+  static emptyRoom() {
+    return new this({
+      id: null,
+      status: '',
+      connections: 0,
+      cardListIds: [],
+      score: {},
+      currentQuestion: {},
+    })
   }
 
   get keyName() {
     return `${Room.keyName}${this.id}`
+  }
+
+  get remainingCard() {
+    return this.cardListIds.length
   }
 
   update() {
@@ -35,16 +54,10 @@ class Room extends Base {
     return Room.MAX_CONNECT > this.connections
   }
 
-  get json() {
-    return {
-      id: this.id,
-      status: this.status,
-      connections: this.connections,
-    }
-  }
-
-  get string() {
-    return JSON.stringify(this.json)
+  pickQuestion() {
+    const index = Math.floor(Math.random() * this.cardListIds.length)
+    const cardId = this.cardListIds.splice(index, 1)
+    return Card.get(cardId)
   }
 }
 
