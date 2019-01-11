@@ -6,8 +6,8 @@ import Room from '../pages/Room'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: Index },
-  { path: '/room/:id', component: Room },
+  { name: 'root', path: '/', component: Index },
+  { name: 'room', path: '/room/:id', component: Room },
 ]
 
 export default new VueRouter({

@@ -10,6 +10,7 @@
     "lint-js": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "buefy": "^0.7.1",
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
