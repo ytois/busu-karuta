@@ -1,8 +1,10 @@
 const express = require('express')
 const path = require('path')
 const expressWs = require('express-ws')
+const session = require('express-session')
 const WebsocketHandler = require('./websocket_handler')
 const Room = require('./models/room')
+const Connection = require('./connection')
 
 // Express App
 const app = express()
@@ -10,6 +12,18 @@ expressWs(app)
 
 app.use(express.static('dist'))
 app.set('port', process.env.PORT || 3000)
+app.use(
+  session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxage: 1000 * 60 * 30,
+    },
+  })
+)
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'dist/index.html'))
@@ -29,12 +43,12 @@ app.get('/api/room/new', (req, res) => {
   })()
 })
 
-let connections = []
+let connection = new Connection()
 
 app.ws('/room/:id', (ws, req) => {
-  connections.push({ roomId: req.params.id, socket: ws })
+  connection.open(req.session.id, req.params.id, ws)
 
-  const handler = new WebsocketHandler(ws, connections)
+  const handler = new WebsocketHandler(ws, connection)
 
   ws.on('message', message => {
     handler.receiveMessage(message)

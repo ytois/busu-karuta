@@ -34,30 +34,25 @@ class WebsocketHandler {
   anser(data) {
     console.log(data)
     let response = { method: 'test', data: { text: 'test message' } }
-    this.sendConnections(response)
+    this.sendConnections(data.roomId, response)
   }
 
   async requestCardList(data) {
     const room = await Room.get(data.roomId)
     const cardList = await Card.getAll(room.cardListIds)
     const response = { method: 'cardList', data: { cardList: cardList } }
-    this.sendConnections(response)
+    this.sendConnections(data.roomId, response)
   }
 
   async requestQuestion(data) {
     const room = await Room.get(data.roomId)
     const question = await room.pickQuestion()
     let response = { method: 'question', data: question }
-    this.sendConnections(response)
+    this.sendConnections(data.roomId, response)
   }
 
-  sendConnections(data) {
-    this.connections.forEach(connect => {
-      // TODO: いずれかがcloseになってるとエラーになるためいったん回避
-      if (connect.socket.readyState === 1) {
-        connect.socket.send(JSON.stringify(data))
-      }
-    })
+  sendConnections(roomId, message) {
+    this.connections.sendRoom(roomId, message)
   }
 
   closeConnection() {
