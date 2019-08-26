@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   pages: {
     index: {
@@ -5,7 +7,13 @@ module.exports = {
       template: './src/index.pug',
     },
   },
+
   configureWebpack: {
     devtool: 'source-map',
+    resolve: {
+      alias: {
+        '@': path.join(__dirname, '/src'),
+      },
+    },
   },
 }
