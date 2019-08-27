@@ -10,6 +10,7 @@ export default {
   computed: {
     config() {
       return {
+        signInFlow: 'popup',
         signInSuccessUrl: '/',
         signInOptions: [
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
