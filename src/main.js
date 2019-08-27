@@ -4,13 +4,17 @@ import store from '@/store'
 import router from '@/router'
 import App from '@/pages/App'
 import '@/styles'
+import firebase from '@/firebase'
 
 Vue.config.productionTip = false
 Vue.use(VueRouterUserRoles, { router })
+Vue.prototype.$user.set({ role: 'guest ' })
 
-const user = {}
-
-Vue.prototype.$user.set(user)
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    Vue.prototype.$user.set(user)
+  }
+})
 
 new Vue({
   store,

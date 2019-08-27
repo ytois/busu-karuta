@@ -1,44 +1,29 @@
 <template lang="pug">
-div.container
-  UserRegistration
+  .container
+    section.hero
+      .hero-body
+        .container
+          h1.title.level-item.has-text-centered
+            | Tittle
 
-  div.room-list
-    ul
-      li(v-for='room in roomList')
-        router-link(:to='{ name: "room", params: { id: room.id } }')
-          | room-id: {{ room.id }}
-
-  div
-    button.button.is-success(@click='createRoom') New Room
-
+    .level-item.has-text-centerd
+      template(v-if='user.uid')
+        | Start Game
+      template(v-else)
+        Login
 </template>
 
 <script>
-import axios from 'axios'
-import UserRegistration from '../components/UserRegistrationForm'
+import Login from '@/components/Login'
 
 export default {
-  components: { UserRegistration },
-
-  data() {
-    return {
-      roomList: [],
-    }
+  components: {
+    Login,
   },
 
-  mounted() {
-    this.fetchRoomList()
-  },
-
-  methods: {
-    fetchRoomList() {
-      const self = this
-      axios.get('/api/room').then(res => (self.roomList = res.data))
-    },
-
-    createRoom() {
-      // TODO: あとで作る
-      return null
+  computed: {
+    user() {
+      return this.$user.get()
     },
   },
 }
