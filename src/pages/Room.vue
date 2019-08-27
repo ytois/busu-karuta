@@ -1,37 +1,58 @@
 <template lang="pug">
   div
-    TermText
-    CardList.margin-top
+    p {{ game }}
 </template>
 
 <script>
-import CardList from '../components/CardList'
-import TermText from '../components/TermText'
-import { createNamespacedHelpers } from 'vuex'
-const { mapState, mapActions } = createNamespacedHelpers('room')
+import firebase from 'firebase'
 
 export default {
-  components: { CardList, TermText },
+  data: () => ({
+    game: null,
+  }),
 
   computed: {
-    ...mapState(['websocket']),
+    gameId() {
+      return this.$route.params.gameId
+    },
   },
 
-  mounted() {
-    this.connectSocket({
-      roomPath: this.$route.path,
-      roomId: this.$route.params.id,
-    })
+  created() {
+    if (this.gameId) {
+      this.fetchGame()
+      return
+    }
+
+    if (!this.gameId && confirm('new game?')) {
+      this.createGame()
+    } else {
+      this.$router.push({ name: 'root' })
+    }
   },
 
   methods: {
-    ...mapActions(['connectSocket']),
+    fetchGame() {
+      const vm = this
+      const fetchGame = firebase.functions().httpsCallable('fetchGame')
+      fetchGame({ game_id: this.gameId }).then(res => {
+        vm.game = res.data
+        console.log(vm.game)
+      })
+    },
+
+    createGame() {
+      const vm = this
+      const createGame = firebase.functions().httpsCallable('createGame')
+      createGame().then(res => {
+        vm.game = res.data
+        this.rewriteUrl(vm.game.id)
+        console.log(vm.game)
+      })
+    },
+
+    rewriteUrl(gameId) {
+      window.history.replaceState(null, null, `/room/${gameId}`)
+    },
   },
 }
 </script>
-
-<style scoped>
-.margin-top {
-  margin-top: 50px;
-}
-</style>

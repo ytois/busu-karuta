@@ -2,7 +2,16 @@ const functions = require('firebase-functions')
 const express = require('express')
 const Game = require('./models/game')
 
-// 現在のゲームを取得. 無い場合は新たに作る
+// ゲーム取得
+exports.fetchGame = functions.https.onCall(async (data, context) => {
+  const uid = context.auth.uid
+  const gameId = data.game_id
+  const game = new Game(gameId)
+  // TODO: ユーザーチェック
+  return await game.get()
+})
+
+// ゲーム作成
 exports.createGame = functions.https.onCall(async (data, context) => {
   const uid = context.auth.uid
   const game = new Game()

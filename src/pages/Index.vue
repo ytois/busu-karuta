@@ -8,13 +8,13 @@
 
     .level-item.has-text-centerd
       template(v-if='user.uid')
-        button.button(@click='createGame') Start Game!
+        button.button(@click='newGame') Start Game!
+        router-link(:to='{ name: "room", params: { gameId: "2N96HlKPSbGyiV1szU5l"}}') room
       template(v-else)
         Login
 </template>
 
 <script>
-import firebase from 'firebase'
 import Login from '@/components/Login'
 
 export default {
@@ -29,13 +29,8 @@ export default {
   },
 
   methods: {
-    createGame() {
-      const createGame = firebase.functions().httpsCallable('createGame')
-      createGame().then(res => {
-        const game = res.data
-        // const gameId = game.id
-        console.log(game)
-      })
+    newGame() {
+      this.$router.push({ name: 'new_room' })
     },
   },
 }

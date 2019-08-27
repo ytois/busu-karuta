@@ -12,7 +12,7 @@ Vue.prototype.$user.set({ role: 'guest ' })
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
-    Vue.prototype.$user.set(user)
+    Vue.prototype.$user.set(Object.assign({ role: 'user' }, user))
   }
 })
 

@@ -9,7 +9,13 @@ module.exports = class Game {
   }
 
   async get() {
-    return await this.collection.doc(this.id)
+    const doc = await this.collection.doc(this.id).get()
+    return Object.assign(
+      {
+        id: doc.id,
+      },
+      doc.data()
+    )
   }
 
   async create(uid) {
