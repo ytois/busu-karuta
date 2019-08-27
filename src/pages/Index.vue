@@ -8,12 +8,13 @@
 
     .level-item.has-text-centerd
       template(v-if='user.uid')
-        | Start Game
+        button.button(@click='createGame') Start Game!
       template(v-else)
         Login
 </template>
 
 <script>
+import firebase from 'firebase'
 import Login from '@/components/Login'
 
 export default {
@@ -24,6 +25,17 @@ export default {
   computed: {
     user() {
       return this.$user.get()
+    },
+  },
+
+  methods: {
+    createGame() {
+      const createGame = firebase.functions().httpsCallable('createGame')
+      createGame().then(res => {
+        const game = res.data
+        // const gameId = game.id
+        console.log(game)
+      })
     },
   },
 }

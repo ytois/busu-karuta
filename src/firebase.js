@@ -10,6 +10,8 @@ const firebaseConfig = {
   appId: '1:764893171362:web:d51de3c36c8e63f1',
 }
 
-firebase.initializeApp(firebaseConfig)
+const app = firebase.initializeApp(firebaseConfig)
+// TODO: ローカルテスト用
+app.functions().useFunctionsEmulator('http://localhost:5001')
 
-export default firebase
+export default app
