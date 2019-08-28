@@ -1,5 +1,5 @@
 <template lang="pug">
-  .karuta-card(v-show='show' @click='onClick' :style='rotate')
+  .karuta-card(v-show='show' :style='rotate' @click='onClick')
     img(v-if='src' :src='src')
     p(v-else) {{ name }}
 </template>
@@ -38,7 +38,8 @@ export default {
 
   methods: {
     onClick() {
-      this.$snackbar.open(this.text)
+      // this.$snackbar.open(this.text)
+      this.$emit('click', this.cardNumber)
     },
   },
 }

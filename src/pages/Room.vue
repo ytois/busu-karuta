@@ -1,10 +1,12 @@
 <template lang="pug">
   .container
-    p {{ game }}
-
-    div
-      input(v-model='num')
-      button.button(@click='answerNumber') ans
+    nav#footer.navbar.is-ffixed-bottom.level
+      .level-item.has-text-centered.with-full
+        p {{ currentText }}
+      .navbar-end
+        .navbar-item
+          .buttons
+            button.button(@click='readText(currentCard.text)') 読む
 
     #card-area
       ul
@@ -15,15 +17,9 @@
             :src='card.src'
             :text='card.text'
             :show='isShow(card.id)'
+            @click='answer'
           )
 
-    nav#footer.navbar.is-ffixed-bottom.level
-      .level-item.has-text-centered.with-full
-        p {{ currentText }}
-      .navbar-end
-        .navbar-item
-          .buttons
-            button.button(@click='readText(currentCard.text)') 読む
 </template>
 
 <script>
@@ -64,8 +60,9 @@ export default {
       return _.includes(this.game.card_list, cardId)
     },
 
-    answerNumber() {
-      this.answerCard(Number(this.num))
+    answer(cardId) {
+      this.answerCard(Number(cardId))
+      console.log(cardId)
     },
 
     async readText(text) {
@@ -84,6 +81,6 @@ export default {
 
 <style scoped>
 #footer {
-  border-top: 1px solid #aaa;
+  border: 1px solid #aaa;
 }
 </style>
