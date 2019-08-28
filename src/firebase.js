@@ -1,13 +1,13 @@
 import firebase from 'firebase'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDkRSlqEDGYQ3fuVT4e-xwESicNTLQspoY',
-  authDomain: 'test-7f01a.firebaseapp.com',
-  databaseURL: 'https://test-7f01a.firebaseio.com',
-  projectId: 'test-7f01a',
-  storageBucket: 'test-7f01a.appspot.com',
-  messagingSenderId: '764893171362',
-  appId: '1:764893171362:web:d51de3c36c8e63f1',
+  apiKey: 'AIzaSyCdj7FgZJJbOBS9kZRSbWGczVTzlN52T3Y',
+  authDomain: 'busu-karuta.firebaseapp.com',
+  databaseURL: 'https://busu-karuta.firebaseio.com',
+  projectId: 'busu-karuta',
+  storageBucket: '',
+  messagingSenderId: '402591219862',
+  appId: '1:402591219862:web:73e4798f03d40dbf',
 }
 
 const app = firebase.initializeApp(firebaseConfig)
