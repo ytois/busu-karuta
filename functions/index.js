@@ -18,26 +18,6 @@ exports.createGame = functions.https.onCall(async (data, context) => {
   return await game.create(uid)
 })
 
-// 回答する
-exports.answerCard = functions.https.onCall((data, context) => {
-  const uid = context.auth.uid
-  const number = data.cardNumber
-  return {
-    collect: true,
-    next_card: {
-      id: 1,
-      text: 'hoge',
-    },
-  }
-})
-
-// ゲームを中断する
-exports.revokeGame = functions.https.onCall((data, context) => {
-  return {
-    status: 'ok',
-  }
-})
-
 const app = express()
 // ランキング
 app.get('/api/ranking', (request, response) => {

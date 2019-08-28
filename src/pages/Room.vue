@@ -1,7 +1,7 @@
 <template lang="pug">
   .container
     nav#footer.navbar.is-ffixed-bottom.level
-      .level-item.has-text-centered.with-full
+      .level-item.has-text-centered
         p {{ currentText }}
       .navbar-end
         .navbar-item
