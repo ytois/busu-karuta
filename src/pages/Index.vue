@@ -8,13 +8,14 @@
 
     .level-item.has-text-centerd
       template(v-if='user.uid')
-        button.button(@click='newGame') Start Game!
-        router-link(:to='{ name: "room", params: { gameId: "2N96HlKPSbGyiV1szU5l"}}') room
+        button.button(v-if='!game' @click='newGame') New Game
+        button.button(v-if='game' @click='startGame') Continue Game
       template(v-else)
         Login
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import Login from '@/components/Login'
 
 export default {
@@ -23,14 +24,27 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      game: state => state.game.currentGame,
+    }),
+
     user() {
       return this.$user.get()
     },
   },
 
   methods: {
+    ...mapActions(['createGame']),
+
     newGame() {
-      this.$router.push({ name: 'new_room' })
+      const vm = this
+      this.createGame().then(_game => {
+        vm.$router.push({ name: 'game' })
+      })
+    },
+
+    startGame() {
+      this.$router.push({ name: 'game' })
     },
   },
 }

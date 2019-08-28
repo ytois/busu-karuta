@@ -17,14 +17,8 @@ const userPermission = {
 const routes = [
   { name: 'root', path: '/', component: Index },
   {
-    name: 'new_room',
-    path: '/room/new',
-    component: Room,
-    meta: userPermission,
-  },
-  {
-    name: 'room',
-    path: '/room/:gameId',
+    name: 'game',
+    path: '/game',
     component: Room,
     meta: userPermission,
   },
