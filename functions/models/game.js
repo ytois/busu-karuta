@@ -34,9 +34,18 @@ module.exports = class Game {
     )
   }
 
-  revoke() {
+  async revoke() {
     return this.collection.doc(this.id).update({
       status: 'revoked',
     })
+  }
+
+  async finish(incorrectCount) {
+    await this.collection.doc(this.id).update({
+      status: 'finish',
+      end_at: dayjs().toDate(),
+      incorrect: incorrectCount || 0,
+    })
+    return await this.get()
   }
 }

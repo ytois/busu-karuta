@@ -22,6 +22,14 @@ export default {
     setGame(state, game) {
       state.currentGame = game
     },
+
+    correct(state) {
+      state.currentGame.card_list.shift()
+    },
+
+    incorrect(state) {
+      state.currentGame.incorrect = (state.currentGame.incorrect || 0) + 1
+    },
   },
 
   actions: {
@@ -41,12 +49,13 @@ export default {
       })
     },
 
-    answerCard({ state, getters }, cardId) {
+    answerCard({ getters, commit }, cardId) {
       const card = getters.currentCard
       if (card.id === cardId) {
-        state.currentGame.card_list.shift()
+        commit('correct')
         return true
       } else {
+        commit('incorrect')
         return false
       }
     },
@@ -55,6 +64,16 @@ export default {
       const revokeGame = firebase.functions().httpsCallable('revokeGame')
       return revokeGame({ game_id: gameId }).then(() => {
         commit('setGame', null)
+      })
+    },
+
+    finishGame({ commit }, payload) {
+      const finishGame = firebase.functions().httpsCallable('finishGame')
+      return finishGame({
+        game_id: payload.gameId,
+        incorrect: payload.incorrectCount,
+      }).then(res => {
+        commit('setGame', res.data)
       })
     },
   },

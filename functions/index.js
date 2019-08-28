@@ -25,6 +25,14 @@ exports.revokeGame = functions.https.onCall(async (data, context) => {
   return await game.revoke()
 })
 
+// ゲームの終了
+exports.finishGame = functions.https.onCall(async (data, context) => {
+  const gameId = data.game_id
+  const incorrect = data.incorrect
+  const game = new Game(gameId)
+  return await game.finish(incorrect)
+})
+
 const app = express()
 // ランキング
 app.get('/api/ranking', (request, response) => {

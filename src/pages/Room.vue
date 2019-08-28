@@ -6,10 +6,14 @@
       .navbar-end
         .navbar-item
           .buttons
-            button.button(@click='readText(currentCard.text)') 読む
+            button.button(@click='readText') 読む
             button.button(@click='revoke') 終了
 
-    #card-area
+    div(v-if='score')
+      p かかった時間: {{ score }}秒
+      p 不正解 {{ game.incorrect }}
+
+    #card-area(v-else)
       ul
         li(v-for='card in cardList')
           Card(
@@ -20,7 +24,6 @@
             :show='isShow(card.id)'
             @click='answer'
           )
-
 </template>
 
 <script>
@@ -38,7 +41,6 @@ export default {
   },
 
   data: () => ({
-    num: null,
     currentText: '',
   }),
 
@@ -51,10 +53,16 @@ export default {
     cardList() {
       return _.shuffle(cardMaster)
     },
+
+    score() {
+      // かかった時間
+      if (!this.game.end_at) return
+      return this.game.end_at._seconds - this.game.created_at._seconds
+    },
   },
 
   methods: {
-    ...mapActions(['answerCard', 'revokeGame']),
+    ...mapActions(['answerCard', 'revokeGame', 'finishGame']),
 
     isShow(cardId) {
       // 残りカードに含まれているか
@@ -64,12 +72,37 @@ export default {
 
     answer(cardId) {
       this.answerCard(Number(cardId))
-      console.log(cardId)
+        .then(result => {
+          if (result) {
+            this.$snackbar.open({
+              message: '正解',
+              type: 'is-success',
+            })
+            this.readText()
+          } else {
+            this.$snackbar.open({
+              message: '不正解',
+              type: 'is-danger',
+            })
+          }
+        })
+        .then(() => {
+          if (this.game.card_list.length === 0) {
+            // 残りカードがなくなったらゲームを終了する
+            const payload = {
+              gameId: this.game.id,
+              incorrect: this.incorrectCount,
+            }
+            return this.finishGame(payload)
+          }
+        })
     },
 
-    async readText(text) {
+    async readText() {
       const vm = this
-      let textArray = text.split('')
+      if (!this.currentCard || !this.currentCard.text) return
+
+      let textArray = this.currentCard.text.split('')
       vm.currentText = ''
 
       while (textArray.length > 0) {

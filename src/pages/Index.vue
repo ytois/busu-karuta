@@ -8,7 +8,7 @@
 
     .level-item.has-text-centerd
       template(v-if='user.uid')
-        button.button(v-if='!game' @click='newGame') New Game
+        button.button(@click='newGame') New Game
         button.button(v-if='game' @click='startGame') Continue Game
       template(v-else)
         Login
