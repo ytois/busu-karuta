@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 import _ from 'lodash'
-import cardList from './card_list'
+import cardList from '@/card_list'
 
 export default {
   state: {

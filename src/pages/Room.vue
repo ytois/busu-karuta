@@ -6,6 +6,16 @@
       input(v-model='num')
       button.button(@click='answerNumber') ans
 
+    #card-area
+      ul
+        li(v-for='card in cardList')
+          Card(
+            :cardNumber='card.id'
+            :name='card.name'
+            :src='card.src'
+            :text='card.text'
+          )
+
     nav#footer.navbar.is-fixed-bottom.level
       .level-item.has-text-centered.with-full
         p {{ currentText }}
@@ -17,10 +27,18 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
+import _ from 'lodash'
+import cardMaster from '@/card_list'
+
+import Card from '@/components/Card'
 
 const sleep = msec => new Promise(resolve => setTimeout(resolve, msec))
 
 export default {
+  components: {
+    Card,
+  },
+
   data: () => ({
     num: null,
     currentText: '',
@@ -31,6 +49,14 @@ export default {
       game: state => state.game.currentGame,
     }),
     ...mapGetters(['currentCard']),
+
+    cardList() {
+      return this.game.card_list.map(id => {
+        return _.find(cardMaster, card => {
+          return card.id === id
+        })
+      })
+    },
   },
 
   methods: {
