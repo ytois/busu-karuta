@@ -1,5 +1,5 @@
 <template lang="pug">
-  .karuta-card(@click='onClick' :style='rotate')
+  .karuta-card(v-show='show' @click='onClick' :style='rotate')
     img(v-if='src' :src='src')
     p(v-else) {{ name }}
 </template>
@@ -22,6 +22,10 @@ export default {
     src: {
       type: String,
       default: '',
+    },
+    show: {
+      type: Boolean,
+      default: true,
     },
   },
 

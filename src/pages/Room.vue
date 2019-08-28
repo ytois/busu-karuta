@@ -14,9 +14,10 @@
             :name='card.name'
             :src='card.src'
             :text='card.text'
+            :show='isShow(card.id)'
           )
 
-    nav#footer.navbar.is-fixed-bottom.level
+    nav#footer.navbar.is-ffixed-bottom.level
       .level-item.has-text-centered.with-full
         p {{ currentText }}
       .navbar-end
@@ -51,16 +52,17 @@ export default {
     ...mapGetters(['currentCard']),
 
     cardList() {
-      return this.game.card_list.map(id => {
-        return _.find(cardMaster, card => {
-          return card.id === id
-        })
-      })
+      return _.shuffle(cardMaster)
     },
   },
 
   methods: {
     ...mapActions(['answerCard']),
+
+    isShow(cardId) {
+      // 残りカードに含まれているか
+      return _.includes(this.game.card_list, cardId)
+    },
 
     answerNumber() {
       this.answerCard(Number(this.num))
