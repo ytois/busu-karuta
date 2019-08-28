@@ -51,6 +51,11 @@ export default {
       }
     },
 
-    revokeGame() {},
+    revokeGame({ commit }, gameId) {
+      const revokeGame = firebase.functions().httpsCallable('revokeGame')
+      return revokeGame({ game_id: gameId }).then(() => {
+        commit('setGame', null)
+      })
+    },
   },
 }

@@ -7,6 +7,7 @@
         .navbar-item
           .buttons
             button.button(@click='readText(currentCard.text)') 読む
+            button.button(@click='revoke') 終了
 
     #card-area
       ul
@@ -53,10 +54,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(['answerCard']),
+    ...mapActions(['answerCard', 'revokeGame']),
 
     isShow(cardId) {
       // 残りカードに含まれているか
+      if (!this.game || !this.game.card_list) return false
       return _.includes(this.game.card_list, cardId)
     },
 
@@ -74,6 +76,13 @@ export default {
         await sleep(300)
         vm.currentText += textArray.shift()
       }
+    },
+
+    revoke() {
+      const vm = this
+      this.revokeGame(this.game.id).then(() => {
+        vm.$router.push({ name: 'root' })
+      })
     },
   },
 }
