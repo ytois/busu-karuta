@@ -1,4 +1,6 @@
 import firebase from 'firebase'
+import _ from 'lodash'
+import cardList from './card_list'
 
 export default {
   state: {
@@ -8,7 +10,11 @@ export default {
   getters: {
     currentCard: state => {
       if (!state.currentGame) return null
-      return state.currentGame.card_list && state.currentGame.card_list[0]
+      const cardNum =
+        state.currentGame.card_list && state.currentGame.card_list[0]
+      return _.find(cardList, card => {
+        return card.id === cardNum
+      })
     },
   },
 
@@ -35,14 +41,16 @@ export default {
       })
     },
 
-    answer({ state, getters }, cardNumber) {
+    answerCard({ state, getters }, cardId) {
       const card = getters.currentCard
-      if (card === cardNumber) {
+      if (card.id === cardId) {
         state.currentGame.card_list.shift()
         return true
       } else {
         return false
       }
     },
+
+    revokeGame() {},
   },
 }
