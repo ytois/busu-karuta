@@ -14,10 +14,9 @@ firebase.auth().onAuthStateChanged(user => {
   if (user) {
     Vue.prototype.$user.set(Object.assign({ role: 'user' }, user))
   }
+  new Vue({
+    store,
+    router,
+    render: h => h(App),
+  }).$mount('#app')
 })
-
-new Vue({
-  store,
-  router,
-  render: h => h(App),
-}).$mount('#app')
