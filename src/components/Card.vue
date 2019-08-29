@@ -44,15 +44,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.karuta-card {
-  width: 70px;
-  background-color: white;
-  border: solid 1px #bbb;
-  box-shadow: 1px 1px 3px #bbb;
-  margin: 10px;
-  float: left;
-  text-align: right;
-}
-</style>

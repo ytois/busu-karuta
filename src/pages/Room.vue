@@ -9,21 +9,18 @@
             button.button(@click='readText') 読む
             button.button(@click='revoke') 終了
 
-    div(v-if='score')
-      p かかった時間: {{ score }}秒
-      p 不正解 {{ game.incorrect }}
+    .karuta-card-container
+      Card(
+        v-for='card in cardList'
+        :cardNumber='card.id'
+        :name='card.name'
+        :src='card.src'
+        :text='card.text'
+        :show='isShow(card.id)'
+        @click='answer'
+      )
 
-    #card-area(v-else)
-      ul
-        li(v-for='card in cardList')
-          Card(
-            :cardNumber='card.id'
-            :name='card.name'
-            :src='card.src'
-            :text='card.text'
-            :show='isShow(card.id)'
-            @click='answer'
-          )
+    ResultDialog(v-model='dialog' :game='result')
 </template>
 
 <script>
@@ -32,16 +29,20 @@ import _ from 'lodash'
 import cardMaster from '@/card_list'
 
 import Card from '@/components/Card'
+import ResultDialog from '@/components/ResultDialog'
 
 const sleep = msec => new Promise(resolve => setTimeout(resolve, msec))
 
 export default {
   components: {
     Card,
+    ResultDialog,
   },
 
   data: () => ({
     currentText: '',
+    dialog: false,
+    result: null,
   }),
 
   computed: {
@@ -54,10 +55,9 @@ export default {
       return _.shuffle(cardMaster)
     },
 
-    score() {
-      // かかった時間
-      if (!this.game.end_at) return
-      return this.game.end_at._seconds - this.game.created_at._seconds
+    endOfGame() {
+      // 残りカードがなくなったら終了
+      return this.game && this.game.card_list.length === 0
     },
   },
 
@@ -87,18 +87,16 @@ export default {
           }
         })
         .then(() => {
-          if (this.game.card_list.length === 0) {
+          if (this.endOfGame) {
             // 残りカードがなくなったらゲームを終了する
-            const payload = {
-              gameId: this.game.id,
-              incorrect: this.incorrectCount,
-            }
-            return this.finishGame(payload)
+            return this.finish()
           }
         })
     },
 
     async readText() {
+      // カードを読み上げる
+      // TODO: 完了前に再実行すると文字列が混ざってしまう
       const vm = this
       if (!this.currentCard || !this.currentCard.text) return
 
@@ -113,9 +111,18 @@ export default {
 
     revoke() {
       const vm = this
-      this.revokeGame(this.game.id).then(() => {
+      return this.revokeGame(this.game.id).then(() => {
         vm.$router.push({ name: 'root' })
       })
+    },
+
+    async finish() {
+      const payload = {
+        gameId: this.game.id,
+        incorrect: this.incorrectCount,
+      }
+      this.result = this.finishGame(payload)
+      this.dialog = true
     },
   },
 }
