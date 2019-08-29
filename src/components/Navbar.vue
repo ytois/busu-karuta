@@ -11,21 +11,27 @@
             span(aria-hidden='true')
             span(aria-hidden='true')
           b-dropdown-item(aria-role='menu-item', :focusable='false', custom='', paddingless='')
+            template(v-if='user.uid')
+              UserProfile
+              hr.navbar-divider
             a.navbar-item
               router-link(:to='{ name: "root" }') Home
             a.navbar-item
               router-link(:to='{ name: "ranking" }') Ranking
-            hr.navbar-divider
-            a.navbar-item
-              button.button(v-show='user.uid' @click='signOut') Logout
+            template(v-if='user.uid')
+              hr.navbar-divider
+              a.navbar-item
+                button.button(v-show='user.uid' @click='signOut') Logout
 </template>
 
 <script>
 import firebase from 'firebase'
+import UserProfile from '@/components/UserProfile'
 import Login from '@/components/Login'
 
 export default {
   components: {
+    UserProfile,
     Login,
   },
 
