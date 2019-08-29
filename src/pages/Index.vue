@@ -1,11 +1,6 @@
 <template lang="pug">
   .container
-    section.hero
-      .hero-body
-        .container
-          h1.title.level-item.has-text-centered
-            | Tittle
-
+    Title
     .level-item.has-text-centerd
       template(v-if='user.uid')
         button.button(@click='newGame') New Game
@@ -16,10 +11,12 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import Title from '@/components/Title'
 import Login from '@/components/Login'
 
 export default {
   components: {
+    Title,
     Login,
   },
 

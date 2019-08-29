@@ -14,3 +14,31 @@
   margin: 10px;
   text-align: right;
 }
+
+.title-balloon {
+  position: relative;
+  width: 100px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 1.2em;
+  line-height: 1.3;
+  text-align: center;
+  letter-spacing: 0.05em;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 15px;
+  filter:drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.2));
+}
+
+.title-balloon::before {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 30%;
+  width: 0;
+  height: 0;
+  margin-left: -10px;
+  border: 10px solid transparent;
+  border-top-color: #fff;
+}
