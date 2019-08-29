@@ -32,15 +32,18 @@ export default {
   methods: {
     async readText() {
       // カードを読み上げる
-      // TODO: 完了前に再実行すると文字列が混ざってしまう
       const vm = this
       if (!this.currentCard || !this.currentCard.text) return
-
-      let textArray = this.currentCard.text.split('')
+      const text = this.currentCard.text
+      let textArray = text.split('')
       vm.currentText = ''
 
       while (textArray.length > 0) {
         await sleep(300)
+        let currentText = this.currentCard && this.currentCard.text
+        if (text !== currentText) {
+          break
+        }
         vm.currentText += textArray.shift()
       }
     },
