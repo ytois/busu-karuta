@@ -1,12 +1,13 @@
 <template lang="pug">
   .container
     Title
-    .level-item.has-text-centerd
-      template(v-if='user.uid')
-        button.button(@click='newGame') New Game
-        button.button(v-if='game' @click='startGame') Continue Game
-      template(v-else)
-        Login
+    .level
+      .level-item.has-text-centerd
+        template(v-if='user.uid')
+          button.button.is-link.mr-10(@click='newGame') New Game
+          button.button.is-link(@click='startGame') Continue Game
+        template(v-else)
+          Login
 </template>
 
 <script>
@@ -46,3 +47,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.mr-10 {
+  margin-right: 10px;
+}
+</style>
