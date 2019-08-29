@@ -31,6 +31,10 @@ export default {
     ResultDialog,
   },
 
+  data: () => ({
+    incorrectCount: 0,
+  }),
+
   computed: {
     ...mapState({
       game: state => state.game.currentGame,
@@ -64,6 +68,7 @@ export default {
               type: 'is-success',
             })
           } else {
+            this.incorrectCount += 1
             this.$snackbar.open({
               message: '不正解',
               type: 'is-danger',

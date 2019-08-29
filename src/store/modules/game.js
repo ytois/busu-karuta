@@ -71,7 +71,7 @@ export default {
       const finishGame = firebase.functions().httpsCallable('finishGame')
       return finishGame({
         game_id: payload.gameId,
-        incorrect: payload.incorrectCount,
+        incorrect: payload.incorrect,
       }).then(res => {
         commit('setGame', res.data)
         return res.data

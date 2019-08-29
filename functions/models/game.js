@@ -41,9 +41,16 @@ module.exports = class Game {
   }
 
   async finish(incorrectCount) {
-    await this.collection.doc(this.id).update({
+    const now = dayjs()
+    const doc = this.collection.doc(this.id)
+    const game = await doc.get()
+    const startTime = dayjs.unix(game.createTime._seconds)
+    const seconds = now.diff(startTime, 'seconds')
+
+    await doc.update({
       status: 'finish',
-      end_at: dayjs().toDate(),
+      end_at: now.toDate(),
+      seconds: seconds,
       incorrect: incorrectCount || 0,
     })
     return await this.get()

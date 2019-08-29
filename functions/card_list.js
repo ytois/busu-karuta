@@ -1,4 +1,4 @@
-export default [
+module.exports = [
   { id: 1, name: 'あ', text: 'アリドリア', src: '/img/01_a.png' },
   { id: 2, name: 'い', text: '犬理科で仮縫い', src: '/img/02_i.png' },
   { id: 3, name: 'う', text: '占い習う', src: '/img/03_u.png' },
