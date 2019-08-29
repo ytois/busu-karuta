@@ -7,7 +7,7 @@
             th.has-text-centered ランク
             th.has-text-centered ユーザー
             th.has-text-centered タイム
-            th.has-text-centered 不正回数
+            th.has-text-centered 不正解数
         tbody
           tr(v-for='rank, index in ranking')
             th.has-text-centered {{ index + 1 }}
