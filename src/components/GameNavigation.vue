@@ -1,12 +1,12 @@
 <template lang="pug">
-  nav#footer.navbar.is-ffixed-bottom.level
+  nav.navbar.is-fixed-bottom.level.is-marginless
     .level-item.has-text-centered
       p {{ currentText }}
     .navbar-end
       .navbar-item
         .buttons
-          button.button(@click='readText') 読む
-          button.button() 終了
+          button.button.is-info(@click='readText') 読む
+    //-       button.button() 終了
 </template>
 
 <script>
@@ -27,6 +27,10 @@ export default {
     currentCard() {
       this.readText()
     },
+  },
+
+  created() {
+    this.readText()
   },
 
   methods: {
@@ -50,3 +54,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.card-text {
+  width: 100%;
+  text-align: center;
+}
+</style>
