@@ -18,8 +18,9 @@ module.exports = class Game {
     )
   }
 
-  async create(uid) {
+  async create(uid, user) {
     const docRef = await this.collection.add({
+      user: user,
       create_user_uid: uid,
       status: 'active',
       created_at: dayjs().toDate(),

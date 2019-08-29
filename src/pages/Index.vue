@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import Title from '@/components/Title'
 import Login from '@/components/Login'
 
@@ -32,13 +32,17 @@ export default {
   },
 
   methods: {
+    ...mapMutations(['startLoading', 'endLoading']),
     ...mapActions(['createGame']),
 
     newGame() {
       const vm = this
-      this.createGame().then(_game => {
-        vm.$router.push({ name: 'game' })
-      })
+      this.startLoading()
+      this.createGame()
+        .then(_game => {
+          vm.$router.push({ name: 'game' })
+        })
+        .finally(this.endLoading)
     },
 
     startGame() {

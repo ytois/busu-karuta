@@ -12,9 +12,9 @@
             span(aria-hidden='true')
           b-dropdown-item(aria-role='menu-item', :focusable='false', custom='', paddingless='')
             a.navbar-item
-              | Home
+              router-link(:to='{ name: "root" }') Home
             a.navbar-item
-              | Ranking
+              router-link(:to='{ name: "ranking" }') Ranking
             hr.navbar-divider
             a.navbar-item
               button.button(v-show='user.uid' @click='signOut') Logout

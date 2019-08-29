@@ -13,6 +13,7 @@
     "node": "8"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dayjs": "^1.8.16",
     "express": "^4.17.1",
     "firebase-admin": "^8.0.0",

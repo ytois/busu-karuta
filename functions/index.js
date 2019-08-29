@@ -1,21 +1,26 @@
 const functions = require('firebase-functions')
 const express = require('express')
 const Game = require('./models/game')
+const admin = require('./admin')
+const cors = require('cors')
 
 // ゲーム取得
 exports.fetchGame = functions.https.onCall(async (data, context) => {
   const uid = context.auth.uid
   const gameId = data.game_id
   const game = new Game(gameId)
-  // TODO: ユーザーチェック
   return await game.get()
 })
 
 // ゲーム作成
 exports.createGame = functions.https.onCall(async (data, context) => {
   const uid = context.auth.uid
+  const user = {
+    name: context.auth.token.name,
+    picture: context.auth.token.picture,
+  }
   const game = new Game()
-  return await game.create(uid)
+  return await game.create(uid, user)
 })
 
 // ゲームの強制終了
@@ -33,18 +38,30 @@ exports.finishGame = functions.https.onCall(async (data, context) => {
   return await game.finish(incorrect)
 })
 
-const app = express()
+const api = express()
+api.use(cors({ origin: true }))
 // ランキング
-app.get('/api/ranking', (request, response) => {
-  const ranking = [
-    { userName: 'user1', score: 100, rank: 1 },
-    { userName: 'user2', score: 90, rank: 2 },
-    { userName: 'user3', score: 80, rank: 3 },
-  ]
+api.get('/ranking', async (request, response) => {
+  const docRef = await admin
+    .firestore()
+    .collection('games')
+    .where('status', '=', 'finish')
+    .orderBy('seconds')
+    .get()
+  const ranking = docRef.docs.map(doc => {
+    const data = doc.data()
+    const user = data.user || {}
+    return {
+      userName: user.name,
+      userPicture: user.picture,
+      seconds: data.seconds,
+      incorrect: data.incorrect,
+    }
+  })
   response
     .status(200)
     .json(ranking)
     .end()
 })
 
-exports.app = functions.https.onRequest(app)
+exports.api = functions.https.onRequest(api)

@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import _ from 'lodash'
 import cardMaster from '@/card_list'
 
@@ -51,6 +51,7 @@ export default {
   },
 
   methods: {
+    ...mapMutations(['startLoading', 'endLoading']),
     ...mapActions(['answerCard', 'revokeGame', 'finishGame']),
 
     isShow(cardId) {
@@ -91,11 +92,12 @@ export default {
     },
 
     async finish() {
+      this.startLoading()
       const payload = {
         gameId: this.game.id,
         incorrect: this.incorrectCount,
       }
-      return this.finishGame(payload)
+      return this.finishGame(payload).finally(this.endLoading)
     },
   },
 }

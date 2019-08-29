@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '@/pages/Index'
 import Room from '@/pages/Room'
+import Ranking from '@/pages/Ranking'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/game',
     component: Room,
     meta: userPermission,
+  },
+  {
+    name: 'ranking',
+    path: '/ranking',
+    component: Ranking,
   },
 ]
 

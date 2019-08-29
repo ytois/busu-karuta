@@ -13,6 +13,20 @@ export default new Vuex.Store({
     }),
   ],
 
+  state: {
+    isLoading: false,
+  },
+
+  mutations: {
+    startLoading(state) {
+      state.isLoading = true
+    },
+
+    endLoading(state) {
+      state.isLoading = false
+    },
+  },
+
   modules: {
     game,
   },
