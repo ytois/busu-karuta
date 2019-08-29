@@ -60,7 +60,7 @@ module.exports = [
   { id: 34, name: 'ま', text: '舞茸・酒・大麻', src: '/img/34_ma.png' },
   { id: 35, name: 'み', text: '水着脱ぎ済み', src: '/img/35_mi.png' },
   { id: 36, name: 'む', text: 'ムカついて布袋掴む', src: '/img/36_mu.png' },
-  { id: 37, name: 'め', text: 'メグロ締め', src: '/img/37_me.png' },
+  { id: 37, name: 'め', text: 'メジロ締め', src: '/img/37_me.png' },
   { id: 38, name: 'も', text: '喪服踏も', src: '/img/38_mo.png' },
   // { id: 39, name: 'や', text: '', src: '/img/39_ya_01.jpg' },
   { id: 40, name: 'や', text: 'やずややずや', src: '/img/40_ya_02.jpg' },
