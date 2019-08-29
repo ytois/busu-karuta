@@ -74,6 +74,7 @@ export default {
         incorrect: payload.incorrectCount,
       }).then(res => {
         commit('setGame', res.data)
+        return res.data
       })
     },
   },

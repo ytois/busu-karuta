@@ -6,8 +6,8 @@
         p.modal-card-title 結果
         button.delete(@click='close' aria-label='close')
       section.modal-card-body
-        p 時間: {{ resultTime }}
-        p 不正回数: {{ game.incorrect }}
+        p 時間: {{ resultTime }}秒
+        p 不正回数: {{ game && game.incorrect }}
       footer.modal-card-foot
         button.button(@click='close') 終了
 </template>
@@ -15,11 +15,6 @@
 <script>
 export default {
   props: {
-    value: {
-      type: Boolean,
-      default: false,
-    },
-
     game: {
       type: Object,
       default: () => {},
@@ -27,20 +22,24 @@ export default {
   },
 
   computed: {
+    endOfGame() {
+      // end_atに値があった場合は自動でダイアログを開く
+      return !!(this.game && this.game.end_at)
+    },
+
     className() {
-      return this.value ? 'is-active' : ''
+      return this.endOfGame ? 'is-active' : ''
     },
 
     resultTime() {
       // かかった時間
-      if (!this.game.end_at) return null
+      if (!this.game || !this.game.end_at) return null
       return this.game.end_at._seconds - this.game.created_at._seconds
     },
   },
 
   methods: {
     close() {
-      this.$emit('input', false)
       this.$router.push({ name: 'root' })
     },
   },

@@ -18,7 +18,7 @@ exports.createGame = functions.https.onCall(async (data, context) => {
   return await game.create(uid)
 })
 
-// ゲームの終了
+// ゲームの強制終了
 exports.revokeGame = functions.https.onCall(async (data, context) => {
   const gameId = data.game_id
   const game = new Game(gameId)

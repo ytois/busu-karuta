@@ -1,17 +1,9 @@
 <template lang="pug">
   .container
-    nav#footer.navbar.is-ffixed-bottom.level
-      .level-item.has-text-centered
-        p {{ currentText }}
-      .navbar-end
-        .navbar-item
-          .buttons
-            button.button(@click='readText') 読む
-            button.button(@click='revoke') 終了
-
     .karuta-card-container
       Card(
         v-for='card in cardList'
+        :key='card.id'
         :cardNumber='card.id'
         :name='card.name'
         :src='card.src'
@@ -19,37 +11,30 @@
         :show='isShow(card.id)'
         @click='answer'
       )
-
-    ResultDialog(v-model='dialog' :game='result')
+    GameNavigation
+    ResultDialog(:game='game')
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import _ from 'lodash'
 import cardMaster from '@/card_list'
 
 import Card from '@/components/Card'
+import GameNavigation from '@/components/GameNavigation'
 import ResultDialog from '@/components/ResultDialog'
-
-const sleep = msec => new Promise(resolve => setTimeout(resolve, msec))
 
 export default {
   components: {
     Card,
+    GameNavigation,
     ResultDialog,
   },
-
-  data: () => ({
-    currentText: '',
-    dialog: false,
-    result: null,
-  }),
 
   computed: {
     ...mapState({
       game: state => state.game.currentGame,
     }),
-    ...mapGetters(['currentCard']),
 
     cardList() {
       return _.shuffle(cardMaster)
@@ -78,7 +63,6 @@ export default {
               message: '正解',
               type: 'is-success',
             })
-            this.readText()
           } else {
             this.$snackbar.open({
               message: '不正解',
@@ -94,21 +78,6 @@ export default {
         })
     },
 
-    async readText() {
-      // カードを読み上げる
-      // TODO: 完了前に再実行すると文字列が混ざってしまう
-      const vm = this
-      if (!this.currentCard || !this.currentCard.text) return
-
-      let textArray = this.currentCard.text.split('')
-      vm.currentText = ''
-
-      while (textArray.length > 0) {
-        await sleep(300)
-        vm.currentText += textArray.shift()
-      }
-    },
-
     revoke() {
       const vm = this
       return this.revokeGame(this.game.id).then(() => {
@@ -121,8 +90,7 @@ export default {
         gameId: this.game.id,
         incorrect: this.incorrectCount,
       }
-      this.result = this.finishGame(payload)
-      this.dialog = true
+      return this.finishGame(payload)
     },
   },
 }
