@@ -5,5 +5,5 @@
         .title-balloon
           | ぶさいく
         h1.title.level-item.has-text-centered
-          | 回分カルタ
+          | 回文カルタ
 </template>
