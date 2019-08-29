@@ -13,7 +13,7 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig)
 // TODO: ローカルテスト用
 if (process.env.NODE_ENV !== 'production') {
-  app.functions().useFunctionsEmulator('http://localhost:5001')
+  app.functions().useFunctionsEmulator('http://localhost:5000')
 }
 
 export default app
