@@ -1,8 +1,8 @@
 <template lang="pug">
   nav.navbar(role='navigation', aria-label='main navigation')
     .navbar-brand
-      a.navbar-item
-        p busu-karuta.com
+      router-link.navbar-item(:to='{ name: "root" }')
+        | busu-karuta.com
     .navbar-menu
       .navbar-end
         b-dropdown(position='is-bottom-left', aria-role='menu')
@@ -17,7 +17,7 @@
             a.navbar-item
               router-link(:to='{ name: "root" }') Home
             a.navbar-item
-              router-link(:to='{ name: "ranking" }') Ranking
+              router-link(:to='{ name: "ranking" }') ランキング
             template(v-if='user.uid')
               hr.navbar-divider
               a.navbar-item

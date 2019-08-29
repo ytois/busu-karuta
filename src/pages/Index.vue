@@ -4,8 +4,8 @@
     .level
       .level-item.has-text-centerd
         template(v-if='user.uid')
-          button.button.is-link.mr-10(@click='newGame') New Game
-          button.button.is-link(@click='startGame') Continue Game
+          button.button.is-link.mr-10(@click='newGame') はじめから
+          button.button.is-link(v-if='game' @click='startGame') つづきから
         template(v-else)
           Login
 </template>

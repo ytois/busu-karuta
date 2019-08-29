@@ -3,7 +3,7 @@
     .hero-body
       .container
         .title-balloon
-          | text
+          | ぶさいく
         h1.title.level-item.has-text-centered
-          | Tittle
+          | 回分カルタ
 </template>
