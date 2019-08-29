@@ -1,27 +1,20 @@
 <template lang="pug">
-  nav.navbar(role='navigation', aria-label='main navigation')
-    .navbar-brand
-      router-link.navbar-item(:to='{ name: "root" }')
-        | busu-karuta.com
-    .navbar-menu
-      .navbar-end
-        b-dropdown(position='is-bottom-left', aria-role='menu')
-          a.navbar-item.navbar-burger.burger(slot='trigger', role='button')
-            span(aria-hidden='true')
-            span(aria-hidden='true')
-            span(aria-hidden='true')
-          b-dropdown-item(aria-role='menu-item', :focusable='false', custom='', paddingless='')
-            template(v-if='user.uid')
-              UserProfile
-              hr.navbar-divider
-            a.navbar-item
-              router-link(:to='{ name: "root" }') Home
-            a.navbar-item
-              router-link(:to='{ name: "ranking" }') ランキング
-            template(v-if='user.uid')
-              hr.navbar-divider
-              a.navbar-item
-                button.button(v-show='user.uid' @click='signOut') Logout
+  b-navbar
+    template(slot='brand')
+      b-navbar-item
+        router-link.navbar-item(:to='{ name: "root" }')
+          | ブサイク回分カルタ
+    template(slot='start')
+      b-navbar-item
+        router-link(:to='{ name: "root" }') Home
+      b-navbar-item
+        router-link(:to='{ name: "ranking" }') ランキング
+    template(slot='end')
+      b-navbar-item
+        UserProfile
+      b-navbar-item
+        .buttons
+          button.button(v-show='user.uid' @click='signOut') Logout
 </template>
 
 <script>

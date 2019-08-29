@@ -1,13 +1,23 @@
 <template lang="pug">
-  .container
-    Title
-    .level
-      .level-item.has-text-centerd
-        template(v-if='user.uid')
-          button.button.is-link.mr-10(@click='newGame') はじめから
-          button.button.is-link(v-if='game' @click='startGame') つづきから
-        template(v-else)
-          Login
+  div
+    .container
+      Title
+      .level
+        .level-item.has-text-centerd
+          template(v-if='user.uid')
+            button.button.is-link.mr-10(@click='newGame') はじめから
+            button.button.is-link(v-if='game' @click='startGame') つづきから
+          template(v-else)
+            Login
+    footer.footer
+      .content.has-text-centered.is-size-7
+        p
+          | 回文考えた人
+          a(href='https://twitter.com/keeeetee') @KeeeeTee
+          | , イラスト描いた人
+          a(href='https://twitter.com/00000cm') @00000cm
+          | , Web版作った人
+          a(href='https://twitter.com/splazoon') @Splazoon
 </template>
 
 <script>
@@ -55,5 +65,9 @@ export default {
 <style scoped>
 .mr-10 {
   margin-right: 10px;
+}
+.footer {
+  background-color: initial;
+  color: #bbb;
 }
 </style>

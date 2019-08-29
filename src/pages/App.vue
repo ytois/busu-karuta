@@ -1,13 +1,13 @@
 <template lang="pug">
   div
-    Navbar
-    .container
-      router-view
-
     b-loading(
       :is-full-page='true'
       :active.sync='isLoading'
     )
+
+    Navbar
+
+    router-view
 </template>
 
 <script>
